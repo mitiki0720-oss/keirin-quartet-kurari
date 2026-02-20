@@ -18,6 +18,13 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer></script>
   <script src="./app.js?v=exfix-lock-02" defer></script>
 </head>
+<script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("/keirin-quartet-kurari/sw.js").catch(console.error);
+    });
+  }
+</script>
 <body id="app">
   <header class="hero" role="banner">
     <img class="hero__img" src="./assets/タイトルロゴ.png" alt="タイトルロゴ">
@@ -35,4 +42,5 @@
   <!-- scripts loaded with defer in <head> -->
 </body>
 </html>
+
 
