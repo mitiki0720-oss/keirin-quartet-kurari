@@ -5,38 +5,7 @@
   - localStorage persistence
 =========== */
 
-// inject visible build badge so we can confirm the browser is loading THIS file
-if(!window.__buildBadgeAdded){
-  window.__buildBadgeAdded = true;
-  window.__BUILD_ID__ = 'exfix-lock-02';
-  (function(){
-    const build = 'exfix-lock-02';
-    const id = 'buildBadge';
-    function make(){
-      if(document.getElementById(id)) return;
-      const d = document.createElement('div');
-      d.id = id;
-      d.textContent = `[BUILD] ${build} ${location.href}`;
-      d.setAttribute('aria-hidden','true');
-      d.style.position = 'fixed';
-      d.style.top = '8px';
-      d.style.right = '8px';
-      d.style.zIndex = '2147483647';
-      d.style.background = 'rgba(0,0,0,0.78)';
-      d.style.color = '#fff';
-      d.style.padding = '6px 10px';
-      d.style.borderRadius = '8px';
-      d.style.fontSize = '12px';
-      d.style.fontWeight = '700';
-      d.style.fontFamily = 'ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Hiragino Sans", "Noto Sans JP", "Yu Gothic", sans-serif';
-      d.style.pointerEvents = 'none';
-      try{ document.body.appendChild(d); }catch(e){ /* body may not exist yet */ }
-    }
-    document.addEventListener('DOMContentLoaded', make);
-    if(document.readyState === 'interactive' || document.readyState === 'complete'){ make(); }
-    try{ console.log('[BUILD] exfix-lock-02'); }catch(e){}
-  })();
-}
+// build badge injection removed to avoid UI overlay during development
 
 // EOF balance guard
 /*
