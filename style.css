@@ -2310,6 +2310,43 @@ button.btn-save-img{
   .playersLogo{ height: 66px; }
 }
 
+
+/* =========================
+   ✅ Mobile対応（スマホでPC幅にならないように）
+   - menuPage: 固定880pxをやめて可変
+   - 4ボタン: 横1列をやめて折り返し（2×2）
+========================= */
+@media (max-width: 900px){
+  .menuPage{
+    width: min(880px, 92vw);
+    margin: 12px auto 44px;
+  }
+
+  .menuPage .grid{
+    flex-wrap: wrap;          /* ✅ 折り返す */
+    gap: 12px;
+  }
+
+  .menuPage .grid .card{
+    flex: 1 1 calc(50% - 12px); /* ✅ 2列 */
+    min-width: 150px;
+  }
+}
+
+/* さらに小さい端末だけ1列（好みでON/OFF） */
+@media (max-width: 380px){
+  .menuPage .grid .card{
+    flex-basis: 100%;
+  }
+}
+
+/* タイトル画像（ヘッダー）がデカすぎる時の保険 */
+@media (max-width: 520px){
+  .hero__img{
+    width: 92vw;
+    height: auto;
+  }
+}
 /* ヘッダー整列 */
 .playersHead{
   display: flex;
@@ -2413,7 +2450,6 @@ button.btn-save-img{
   min-height: 170px !important;
   padding-top: 6px;
 }
-
 
 
 
