@@ -1,0 +1,14 @@
+{
+  "name": "くらりの競輪うぇぶさいと",
+  "short_name": "競輪",
+  "start_url": "/keirin-quartet-kurari/#/",
+  "scope": "/keirin-quartet-kurari/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    { "src": "/keirin-quartet-kurari/assets/icons/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/keirin-quartet-kurari/assets/icons/android-chrome-512x512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/keirin-quartet-kurari/assets/icons/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}
