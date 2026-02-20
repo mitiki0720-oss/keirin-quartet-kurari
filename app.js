@@ -2266,7 +2266,7 @@ function renderPredict(){
         </div>
         <h2 style="margin:0 0 8px;">プロンプト作成（分割）</h2>
 
-        <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px;">
+        <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:6px;">
           <button id="genParts" class="btn">パート生成</button>
           <button id="copyAllBtn" class="btn">全部コピー</button>
           <button id="exportPredictZipBtn" class="btn">ZIP書き出し</button>
@@ -2274,7 +2274,7 @@ function renderPredict(){
           <button id="predictZipBtn" class="btn">ZIP読み込み</button>
           <span id="predictZipMsg" class="muted" style="margin-left:6px;font-size:12px"></span>
           <div style="flex:1"></div>
-          <select id="savedRaceSelect" class="select" style="width:320px;">
+          <select id="savedRaceSelect" class="select" style="width:min(320px, 100%);">
             <option value="">保存済みレースから選択（本日のレースで取り込み済み）</option>
           </select>
           <button id="btnUseSaved" class="btn" type="button">取り込む</button>
