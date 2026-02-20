@@ -1,0 +1,2422 @@
+/* BUILD: exfix-lock-02 */
+:root{
+  --bg:#f6f7fb;
+  --card:#ffffff;
+  --text:#1b1f2a;
+  --muted:#586174;
+  --line:#e5e7ef;
+  --accent:#2f6bff;
+  --shadow:0 8px 24px rgba(16,24,40,.12);
+  --radius:16px;
+}
+
+*{ box-sizing:border-box; }
+html,body{
+  margin:0;
+  padding:0;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Hiragino Sans", "Noto Sans JP", "Yu Gothic", sans-serif;
+  color:var(--text);
+
+  /* ✅ 全ページ共通：左右の白い余白も含めて背景を統一 */
+  background: var(--bg) url("./assets/会場一覧おおもと背景.png") center / cover no-repeat fixed;
+}
+
+/* hero header: fixed height with centered content to avoid blocking UI */
+
+/* 4:1バナーをそのまま表示 */
+.hero__overlay{
+  position:absolute; inset:0;
+  background: linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.35));
+  display:flex; align-items:flex-end;
+}
+.hero__inner{ width:min(1100px, 92vw); margin:0 auto; padding: 22px 0 28px; color:#fff; }
+.brand{ display:flex; gap:10px; align-items:center; margin-bottom:10px; }
+.brand__badge{
+  display:inline-flex; align-items:center; gap:8px;
+  padding:6px 10px; border-radius:999px;
+  background: rgba(255,255,255,.16);
+  border:1px solid rgba(255,255,255,.28);
+  backdrop-filter: blur(8px);
+  font-weight:700; letter-spacing:.5px;
+}
+.hero__title{ margin:0; line-height:1.05; font-size: clamp(28px, 4vw, 46px); text-shadow: 0 6px 18px rgba(0,0,0,.35); }
+.hero__title span{ color:#ffe66a; }
+.hero__subtitle{ margin:10px 0 0; font-size: clamp(18px, 2.4vw, 30px); font-weight:800; text-shadow: 0 6px 18px rgba(0,0,0,.35); }
+
+.container{ width:min(1100px, 92vw); margin: 18px auto 60px; }
+.footer{ padding:18px 0 30px; text-align:center; color:var(--muted); }
+
+.hero{
+  /* ===== PC前提：タイトルロゴ（スクロール追従なし） ===== */
+  position: relative;   /* ✅ stickyやめる */
+  z-index: 1;
+  height: 360px;        /* 300→360で顔が入るライン */
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 12px 0;
+  overflow: hidden;
+  line-height: 0;
+
+  background: transparent;
+}
+
+/* ✅ 横幅を広く使って“バナーっぽく”見せる（上下を軽くトリミング） */
+.hero__img{
+  display: block;
+
+  width: min(1100px, 92vw);
+  height: 100%;
+
+  object-fit: cover;          /* ★ここがポイント：小さくならない */
+
+  /* x=40%: 少し左寄せ（キャラ救済） */
+  /* y=52%: 下側をもっと見せる */
+  object-position: 40% 52%;
+
+  border-radius: 18px;        /* 任意：かわいく */
+  box-shadow: var(--shadow);  /* 任意：浮かせる */
+}
+.card h2{ margin:0 0 6px; font-size: 18px; }
+.card p{ margin:0; color: var(--muted); font-size: 13px; line-height:1.5; }
+
+.btn{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  align-items:flex-start;
+  justify-content:flex-start;
+  background: linear-gradient(180deg, #ffffff, #f8f9ff);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px 12px;
+  cursor:pointer;
+  transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+  text-align:left;
+}
+.btn:hover{ transform: translateY(-2px); box-shadow: 0 12px 28px rgba(16,24,40,.14); border-color:#d7dbef; }
+.btn__title{ font-weight:900; font-size: 16px; }
+.btn__meta{ color: var(--muted); font-size: 12px; line-height:1.5; }
+
+.topnote{
+  margin-top: 14px;
+  padding: 12px 14px;
+  background: rgba(47,107,255,.08);
+  border: 1px solid rgba(47,107,255,.18);
+  border-radius: 14px;
+  color: #243055;
+}
+
+.kbd{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  padding:2px 6px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  background:#fff;
+}
+
+.row{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+.input, textarea{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 12px;
+  background:#fff;
+  font-size: 14px;
+}
+textarea{ min-height: 180px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
+.actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+.primary{
+  background: var(--accent);
+  border:1px solid rgba(0,0,0,.06);
+  color:#fff;
+  padding: 10px 12px;
+  border-radius: 12px;
+  font-weight:800;
+  cursor:pointer;
+}
+.ghost{
+  background:#fff;
+  border:1px solid var(--line);
+  color: var(--text);
+  padding: 10px 12px;
+  border-radius: 12px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.list{
+  margin-top: 12px;
+  display:grid;
+  gap:10px;
+}
+.item{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px 12px;
+}
+.item__title{ font-weight:900; margin:0 0 6px; }
+.item__sub{ margin:0; color:var(--muted); font-size:12px; }
+hr.sep{ border:none; border-top:1px solid var(--line); margin: 14px 0; }
+
+/* 非表示にしておくと安全（オプション） */
+.hero__overlay,
+.hero__inner{
+  display: none;
+}
+
+/* トップのメニューカードだけ背景を画像にする */
+.card--menu{
+  position: relative;
+  overflow: hidden; /* 角丸に合わせて背景も切る */
+}
+
+.card--menu::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: url("./assets/メニュー枠の背景.png") center/cover no-repeat;
+  opacity: 0.55;              /* 画像の見え具合（調整可） */
+  z-index: 0;
+}
+
+.card--menu::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: rgba(255,255,255,0.70); /* 白い透けレイヤー（調整可） */
+  z-index: 1;
+}
+
+.card--menu > *{
+  position: relative;
+  z-index: 2;
+}
+
+/* 任意のガラス感 */
+.card--menu{
+  backdrop-filter: blur(2px);
+}
+
+/* 見出し画像を“ボタンカード級”に大きくする */
+.menuTitle{
+  margin: 0 0 14px;
+}
+
+/* 画像を横幅に合わせて大きく、でも潰さず表示 */
+.menuTitle__img{
+  display: block;
+  height: 72px;       /* ★ここがメイン：会場タブ枠に近い存在感 */
+  width: auto;
+  max-width: 100%;    /* はみ出し防止 */
+}
+
+@media (max-width: 520px){
+  .menuTitle__img{ height: 60px; }
+}
+
+/* 画像ボタン（会場タブ用） */
+.btn--img{
+  padding: 0;
+  overflow: hidden;
+  border-radius: 14px;
+  aspect-ratio: 7 / 3; /* 1680x720 */
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+}
+
+/* Prompt builder styles */
+#promptBuilder { margin-top: 8px; }
+details.part { background: #fff; border:1px solid var(--line); border-radius:10px; padding:8px; margin:8px 0; }
+details.part summary{ font-weight:700; cursor:pointer; }
+.partBody{ margin-top:8px; }
+.partTextarea{ width:100%; min-height:120px; border:1px solid var(--line); border-radius:8px; padding:8px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size:13px; background:#fff; }
+.partMeta{ margin-top:6px; color:#666; font-size:12px; }
+#promptAll{ min-height:220px; background:#fbfcff; }
+
+.btn__img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;   /* 切れを最小にする */
+  display: block;
+
+  transform: scale(1.06);        /* ←少し拡大して余白を消す */
+  transform-origin: center;
+}
+
+/* 保存ボタンを画像化（見た目のみ） */
+.btn-save-img{
+  background: transparent;
+  border: 0;
+  padding: 0;
+  box-shadow: none;
+  cursor: pointer;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-save-img__img{
+  height: 62px; /* 54px -> 62px：影に負けないサイズへ */
+  width: auto;
+  display: block;
+}
+
+button.btn-save-img{
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+.btn-save-img:hover,
+.btn-save-img:active{
+  transform: translateY(0);
+  filter: none;
+}
+
+/* 画像ボタン共通：余白を消して影がズレないようにする */
+.btn-img{
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* クリア画像ボタンは保存と同じサイズ感で表示 */
+.btn-clear-img__img{
+  height: 62px;
+  width: auto;
+  display: block;
+}
+
+/* 画像ボタンのホバー挙動保険 */
+.btn-img:hover,
+.btn-img:active{
+  transform: translateY(0);
+  filter: none;
+}
+
+
+/* 見えない説明文（スクリーンリーダー用） */
+.sr-only{
+  position:absolute;
+  width:1px;
+  height:1px;
+  padding:0;
+  margin:-1px;
+  overflow:hidden;
+  clip:rect(0,0,0,0);
+  white-space:nowrap;
+  border:0;
+}
+
+/* import UI / preview styles for venues */
+.importBox{
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 14px;
+  padding: 12px;
+  margin: 10px 0 12px;
+  background: rgba(255,255,255,.65);
+}
+.importRow{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+.importLabel{
+  min-width: 88px;
+  font-weight: 700;
+}
+.importHint{
+  font-size: 12px;
+  opacity: .75;
+}
+.previewBox{
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 14px;
+  padding: 12px;
+  margin: 10px 0 12px;
+  background: rgba(255,255,255,.75);
+}
+.previewTitle{
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+.previewBody{
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  max-height: 260px;
+  overflow: auto;
+}
+
+/* 会場タブだけ：操作部品を少し大きくして押しやすく */
+.venuesPage button,
+.venuesPage .btn{
+  min-height: 44px;
+  padding: 10px 14px;
+  font-size: 14px;
+  border-radius: 12px;
+}
+
+/* 会場選択（select）を大きく */
+.venuesPage select{
+  min-height: 44px;
+  padding: 10px 12px;
+  font-size: 14px;
+  border-radius: 12px;
+}
+
+/* ファイル選択（input[type=file]）も押しやすく */
+/* EX-related styles consolidated at file end (single override block) */
+
+/* 追加：会場ページ用の見やすいUI */
+.venuesCard{
+  padding: 16px;
+}
+.venuesSection{
+  margin-bottom: 18px;
+}
+.venuesSection__title{
+  margin: 6px 0 12px;
+  font-size: 16px;
+  font-weight: 700;
+}
+.row{ margin: 10px 0; }
+.row--buttons{ display:flex; gap:10px; flex-wrap:wrap; }
+
+/* 当場成績：複数着順を1行で表示（SBは右上） */
+.todayRaceFrame .rcTopPills { padding: 2px 0; }
+
+.todayRaceFrame .rcPills{
+  display:flex;
+  gap:6px;
+  align-items:flex-start;
+  flex-wrap:nowrap;
+  white-space:nowrap;
+  overflow:hidden; /* はみ出しは切る（必要ならautoに変更） */
+}
+
+.todayRaceFrame .rcPill{
+  position:relative;
+  display:inline-flex;
+  justify-content:center;
+  align-items:center;
+  min-width:22px;
+  height:22px;
+  padding:0 6px;
+  border-radius:999px;
+  background:rgba(0,0,0,0.06);
+  font-size:13px;
+  font-weight:800;
+  line-height:1;
+}
+
+.todayRaceFrame .rcPillSb{
+  position:absolute;
+  top:-7px;
+  right:-6px;
+  font-size:10px;
+  font-weight:900;
+  line-height:1;
+}
+
+.label{ display:block; font-size:12px; margin-bottom:6px; opacity:.85; }
+.select, .textarea{ width:100%; border-radius:10px; }
+.actions-shift-right{ padding-left: 14px; }
+
+/* 保存・クリア画像ボタン：影を出さない（hover/focus含む） */
+.btn-img,
+.btn-img:hover,
+.btn-img:focus,
+.btn-img:active{
+  box-shadow: none !important;
+  filter: none !important;
+  transform: none !important;
+}
+
+/* もし画像(img)側に影が付いている場合も潰す */
+.btn-img .btn__img{
+  filter: none !important;
+  box-shadow: none !important;
+}
+
+/* 保存・クリアの間隔を詰める（クリアを少し左へ） */
+.actions-tight{
+  display: flex;
+  align-items: center;
+  gap: 8px; /* 間隔。6px/4pxでさらに詰められる */
+}
+.viewer{ border:1px solid rgba(0,0,0,.00); border-radius:12px; padding:12px; background: transparent; white-space: pre-wrap; line-height:1.6; min-height:140px; }
+.viewer.is-empty{ opacity:.7; }
+
+/* Glass-style shared components */
+.glass-box{
+  background: rgba(255,255,255,0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.55);
+  border-radius: 14px;
+  box-shadow: 0 10px 26px rgba(0,0,0,0.08);
+}
+
+.section-card{
+  padding: 12px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.00);
+}
+
+.glass-input{ display:flex; flex:1; padding:8px; }
+.glass-input textarea{ width:100%; background:transparent; border:none; outline:none; min-height:200px; resize:vertical; color:#222; }
+.glass-input textarea:focus{ box-shadow:none; }
+
+.glass-view{ padding:12px; }
+
+
+/* 会場ページ：外枠を透明にして背景を見せる */
+.venuesPage .venuesCard{
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+/* セクションも白ベタを消す（もし背景が付いていたら） */
+.venuesPage .venuesSection{
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 14px 0;
+}
+
+/* 入力部品は白背景で浮かせる（可読性確保） */
+.venuesPage .select,
+.venuesPage .textarea{
+  background: rgba(255,255,255,0.92);
+  border: 1px solid rgba(0,0,0,0.10);
+}
+
+.venuesPage .viewer{
+  background: rgba(255,255,255,0.90);
+  border: 1px solid rgba(0,0,0,0.10);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.10);
+}
+
+/* 会場一覧：戻るボタンを本日のレースと同サイズに */
+.venuesHeader{
+  position: relative;     /* backLink/Titleの基準にする */
+  min-height: 130px;      /* タイトルの分の余白を確保（必要なら 110〜150で調整） */
+}
+
+.venuesPage .backLink{
+  position: absolute;
+  top: 12px;
+  right: 14px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+  margin: 0;
+  line-height: 0;
+  background: transparent;
+  border: 0;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.venuesPage .backLink__img{
+  display: block;
+  width: 190px;   /* ← todayBackBtn と同じ */
+  height: auto;
+}
+
+/* 画面が狭い時だけ少し縮める（任意） */
+@media (max-width: 520px){
+  .venuesPage .backLink__img{ width: 160px; }
+}
+
+.venuesPage .label,
+.venuesPage .venuesSection__title{
+  color: rgba(0,0,0,0.85);
+  text-shadow: 0 1px 0 rgba(255,255,255,0.45);
+}
+
+/* 保存ボタンの横幅を自然にする */
+.venuesPage .row--buttons{ justify-content: flex-start; }
+.venuesPage #btnSaveVenue,
+.venuesPage #btnClearVenue{
+  width: auto;
+  min-width: 140px;
+  padding: 10px 16px;
+}
+
+/* 最終手段：venuesPage内の.cardを透明化（中央カードが白くならない場合のみ） */
+.venuesPage .card{
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Markdownプレビュー枠 */
+.mdPreview{
+  background: #fff;
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 12px;
+  padding: 14px 16px;
+  line-height: 1.7;
+  color: #111;
+  text-transform: none;
+  overflow-x: auto;
+}
+
+.mdPreview h1{ font-size: 20px; margin: 14px 0 10px; }
+.mdPreview h2{ font-size: 18px; margin: 14px 0 10px; }
+.mdPreview h3{ font-size: 16px; margin: 12px 0 8px; }
+.mdPreview p{ margin: 8px 0; }
+.mdPreview ul, .mdPreview ol{ padding-left: 1.4em; margin: 8px 0; }
+.mdPreview pre{ background: #f6f8fa; padding: 12px; border-radius: 10px; overflow: auto; }
+.mdPreview code{ background: #f6f8fa; padding: 0 6px; border-radius: 6px; }
+.mdPreview table{ border-collapse: collapse; width: max-content; min-width: 100%; }
+.mdPreview th, .mdPreview td{ border: 1px solid rgba(0,0,0,.12); padding: 8px 10px; white-space: nowrap; }
+.mdPreview th{ background: #f3f6ff; font-weight: 700; }
+
+/* セクション見出し画像（入力＆保存） */
+.sectionTitleImg{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 6px 0 10px;
+}
+
+.sectionTitleImg__img{
+  height: 112px;   /* ←約2倍 */
+  width: auto;
+  display: block;
+}
+
+@media (max-width: 480px){
+  .sectionTitleImg__img{ height: 48px; }
+}
+
+/* 会場選択：ラベル画像（少し大きく＆右に寄せる） */
+.fieldLabelImg{
+  display: inline-flex;
+  align-items: center;
+  margin: 6px 0 8px;
+
+  /* 右にずらす */
+  margin-left: 18px;   /* ←右へ（10〜30pxで微調整） */
+}
+
+.fieldLabelImg__img{
+  height: 64px;        /* ←入力＆保存(112px)より小さく、でも大きめ */
+  width: auto;
+  display: block;
+}
+
+/* 会場メモラベルを少し右へ（1文字分） */
+.venuesPage .fieldLabel--venueMemo{
+  margin-left: 1em;
+}
+
+/* 共通：画像ラベル（会場選択と閲覧で流用） */
+.labelImg{
+  height: 64px;
+  width: auto;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* 会場選択と閲覧ラベルを同じ右寄せにする */
+.fieldLabel--select,
+.fieldLabel--view{
+  margin-left: 18px;
+}
+
+/* 保険：閲覧ラベルのテキストが残る場合は無効化（画像には影響しない） */
+.fieldLabel--view{
+  font-size: 0;
+}
+
+/* 会場選択のセレクト：横幅を短くする */
+#venueSelect{
+  width: 360px;       /* ←短くする（300〜420pxで調整） */
+  max-width: 100%;
+}
+
+/* スマホでは詰まり防止で少し広め */
+@media (max-width: 480px){
+  #venueSelect{ width: 100%; }
+}
+
+/* 保険：親行が flex で幅を広げているとき */
+.venueRow{
+  justify-content: flex-start;
+  gap: 12px;
+}
+
+/* 会場一覧タイトル画像：大きく＆位置を右下へ（会場ページのみ） */
+.venuesPage .venuesTitle__img{
+  height: 110px;      /* さらに小さく（目安: 100〜120px） */
+  width: auto;
+  display: block;
+
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0 !important;
+  z-index: 2;
+}
+
+/* 入力＆保存 と 閲覧 の見出し画像を同じサイズに統一（img に付けるクラス向け） */
+/* removed fixed small height for sectionTitleImg to allow uniform title sizing */
+
+/* 会場ページの画像見出し（入力＆保存 / 閲覧 共通） */
+.venue-title-img{
+  height: 112px;          /* 見出しサイズを拡大（88 -> 112） */
+  width: auto;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 6px 0; /* 見出し上下の余白（必要に応じて調整） */
+}
+
+/* 会場一覧：テキスト一括インポート */
+.venuesPage .venueImportRow{
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 8px 0;
+}
+.venuesPage .venueImportRow .fileInput{
+  width: 320px;
+  max-width: 100%;
+}
+.venuesPage .smallMsg{
+  font-size: 12px;
+  opacity: 0.85;
+}
+.venuesPage .smallMsg.isError{ opacity: 1; }
+
+/* 過去のレース（カレンダー） */
+.historyPage .historyCalBar{
+  display:flex; align-items:center; justify-content:center;
+  gap:12px; margin:10px 0 14px;
+}
+.historyPage .calNav{ padding:6px 10px; border-radius:10px; }
+.historyPage .calLabel{ font-weight:700; }
+.historyPage .calendarGrid{ display:grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap:10px; }
+.historyPage .dayCell{ position:relative; border-radius:14px; padding:10px 8px; min-height:64px; background: rgba(255,255,255,.72); border: 1px solid rgba(255,255,255,.55); cursor:pointer; }
+.historyPage .dayCell.isEmpty{ opacity:.35; cursor:default; }
+.historyPage .dayCell.hasData{ outline: 2px solid rgba(255, 196, 0, .55); box-shadow: 0 6px 14px rgba(255, 196, 0, .18); }
+.historyPage .dayNum{ font-weight:800; }
+.historyPage .badge{ position:absolute; right:8px; bottom:8px; font-size:12px; padding:2px 8px; border-radius:999px; background: rgba(0,0,0,.65); color: #fff; }
+.historyListWrap{ margin-top:14px; }
+.historyListTitle{ font-weight:800; margin:6px 0; }
+.historyList .historyItem{ display:flex; justify-content:space-between; align-items:center; padding:10px 12px; border-radius:14px; background: rgba(255,255,255,.72); border: 1px solid rgba(255,255,255,.55); margin-bottom:8px; }
+
+/* ===== 過去のレース：ヘッダー周りの干渉対策 ===== */
+.historyPage .card{
+  position: relative;
+  padding: 64px 18px 18px;  /* 上に余白を作って戻るボタンと干渉しないように */
+}
+.historyPage .todayBackBtn{
+  top: 24px;                /* 少し下げる */
+  right: 14px;
+}
+@media (max-width: 520px){
+  .historyPage .todayBackBtn img{ width: 160px; }
+}
+
+/* ===== 過去のレース：曜日カラー ===== */
+.historyPage .dayCell.isSat .dayNum{ color: #37B7FF; } /* 土：水色 */
+.historyPage .dayCell.isSun .dayNum,
+.historyPage .dayCell.isHoliday .dayNum{ color: #E01616; } /* 日＋祝：赤 */
+
+@media (max-width: 520px){
+  .venue-title-img{
+    height: 92px;         /* モバイル時は少し縮める（72 -> 92） */
+  }
+}
+
+/* ===== 影を完全に消す（保存を最優先で潰す） ===== */
+.btn-save-img,
+.btn-save-img:hover,
+.btn-save-img:focus,
+.btn-save-img:active{
+  box-shadow: none !important;
+  filter: none !important;
+  transform: none !important;
+}
+
+/* 画像(img)側にdrop-shadow等が付いているケースも潰す */
+.btn-save-img img,
+.btn-save-img .btn__img{
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+/* クリアをもう少し左に寄せる */
+.actions-tight{ gap: 6px; }
+.btn-clear-img{ margin-left: -10px; }
+
+/* Divider line image between header and input section */
+.venue-divider{
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  object-fit: contain;   /* 見切れ防止：横幅に合わせて縮小 */
+  object-position: center;
+  margin: 10px 0 16px;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* 会場一覧：TXT一括取り込み */
+.venue-import-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin: 10px 0 12px;
+}
+.venue-import-row .btn{
+  padding: 10px 14px;
+}
+#venueImportStatus.hint{
+  font-size: 12px;
+  opacity: .85;
+}
+
+/* Venue panel: unify input textarea and viewer styles */
+.venue-panel{
+  margin: 14px 0;
+  padding: 12px 14px;
+  background: rgba(255,255,255,0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.55);
+  border-radius: 16px;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.10);
+}
+
+.venue-panel textarea{
+  width: 100%;
+  min-height: 220px;
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: vertical;
+  font-size: 14px;
+  color: #222;
+}
+
+.venue-panel textarea:focus{
+  box-shadow: none;
+  border: none;
+  outline: none;
+}
+
+.venue-viewer{
+  min-height: 110px;
+  white-space: pre-wrap;
+}
+
+/* 任意の箱にオーバーレイを付ける共通クラス */
+.has-overlay{
+  position: relative;
+  overflow: hidden;
+  box-shadow: none;
+}
+
+.has-overlay::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,var(--overlay-alpha,0.55));
+  pointer-events: none;
+  z-index: 0;
+}
+
+.has-overlay > *{
+  position: relative;
+  z-index: 1;
+}
+
+/* race-panel：枠の中だけ背景画像を敷く（オーバーレイより背面） */
+.race-panel{
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px;
+}
+
+.race-panel::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("./assets/くらり背景（朝）.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.35; /* 調整可 */
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* race-panel 内の入力等を目立たせる */
+.race-panel textarea,
+.race-panel input,
+.race-panel .panel,
+.race-panel .card{
+  background: rgba(255,255,255,0.90);
+}
+
+/* 本日のレース専用フレーム：背景画像と枠内オーバーレイ（他タブに波及しない） */
+.todayRaceFrame .todayHelpText{
+  display: none;
+}
+
+/* todayRaceFrame: preserve existing background (via --today-bg), then add
+   a semi-transparent white veil and an overlay PNG on top. Scoped to this
+   element only so other tabs are unaffected. */
+.todayRaceFrame{
+  position: relative;
+  overflow: hidden;
+  --today-bg: none;
+  background-image: var(--today-bg);
+  background-size: cover;
+  background-position: center;
+}
+
+/* 白い薄幕（読みやすさ向上） */
+.todayRaceFrame::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.28); /* 調整可 */
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* 追加オーバーレイ画像（透過PNG） */
+.todayRaceFrame::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("./assets/本日のレース_オーバーレイ.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.18; /* 濃さは調整可 */
+  mix-blend-mode: screen;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.todayRaceFrame > *{
+  position: relative;
+  z-index: 3;
+}
+
+/* 本日のレース：タイトル画像 */
+.todayRaceTitle {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+}
+
+.todayRaceTitleImg{
+  height: clamp(110px, 12vw, 170px); /* ← 約3倍 */
+  width: auto;
+  display: block;
+  object-fit: contain;
+  margin-left: 18px; /* ← 右にずらす */
+}
+
+.todayRaceHeader,
+.todayRaceTopRow,
+.todayRaceHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* 本日のレース：右上の戻る画像ボタン */
+.todayRaceFrame { position: relative; }
+
+.todayBackBtn{
+  position: absolute;
+  top: 12px;
+  right: 14px;
+
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+
+  line-height: 0;
+  cursor: pointer;
+
+  box-shadow: none;
+  filter: none;
+}
+
+.todayBackBtn img{
+  display: block;
+  width: 190px;
+  height: auto;
+  box-shadow: none;
+}
+
+.todayBackBtn:hover { transform: translateY(-1px); }
+.todayBackBtn:active { transform: translateY(0px); }
+.todayBackBtn:focus-visible {
+  outline: 2px solid rgba(255,255,255,.9);
+  outline-offset: 4px;
+  border-radius: 14px;
+}
+
+/* 本日のレース：日付テキスト（入力枠を置き換え） */
+.todayRaceDate{
+  font-size: clamp(22px, 3.6vw, 26px);
+  font-weight: 800;
+  color: #111;
+  margin: 8px 0 12px;
+  line-height: 1.1;
+  background: transparent;
+  border: none;
+  padding: 0;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.6);
+}
+
+/* 時間帯ごとの背景変数（ファイル名は正確に指定） */
+.todayRaceFrame{ --today-bg: url("./assets/くらり背景（朝）.png"); }
+.todayRaceFrame.bg-morning { --today-bg: url("./assets/くらり背景（朝）.png"); }
+.todayRaceFrame.bg-day     { --today-bg: url("./assets/くらり背景（昼）.png"); }
+.todayRaceFrame.bg-evening { --today-bg: url("./assets/くらり背景（夕方）.png"); }
+.todayRaceFrame.bg-night   { --today-bg: url("./assets/くらり背景（夜）.png"); }
+
+/* New: wide semi-transparent venue glass panels */
+:root{
+  --venue-glass-side: 24px;
+  --venue-glass-radius: 18px;
+  --venue-glass-bg: rgba(255,255,255,.70);
+  --venue-glass-border: rgba(255,255,255,.55);
+  --venue-glass-shadow: 0 10px 28px rgba(0,0,0,.10);
+  --venue-inner-bg: rgba(255,255,255,.86);
+}
+
+.venue-glass{
+  width: calc(100% - (var(--venue-glass-side) * 2));
+  margin: 14px var(--venue-glass-side) 48px; /* 下に余白を追加 */
+  padding: 16px 16px;
+  border-radius: var(--venue-glass-radius);
+  background: var(--venue-glass-bg);
+  border: 1px solid var(--venue-glass-border);
+  box-shadow: var(--venue-glass-shadow);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.venue-glass--memo textarea{
+  width: 100%;
+  min-height: 220px;
+  resize: vertical;
+  background: var(--venue-inner-bg);
+  border: 1px solid rgba(0,0,0,.10);
+  border-radius: 14px;
+  padding: 14px 16px;
+  outline: none;
+}
+
+.venue-glass--view .venue-viewer,
+.venue-glass--view pre{
+  width: 100%;
+  min-height: 180px;
+  background: var(--venue-inner-bg);
+  border: 1px solid rgba(0,0,0,.10);
+  border-radius: 14px;
+  padding: 14px 16px;
+  overflow: auto;
+  white-space: pre-wrap;
+}
+
+/* Ensure larger containers don't carry white backgrounds */
+.venue-page,
+.venue-container,
+.panel,
+.card{
+  background: transparent !important;
+}
+
+/* ===== Today page inner layout (scoped to todayRaceFrame) ===== */
+.todayRaceFrame .todayRaceInner{
+  padding: 18px 18px 28px;
+  display: grid;
+  gap: 16px;
+}
+
+.todayRaceFrame .todayRaceHeader{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  position: relative;
+  padding-bottom: 4px; /* 保険：ヘッダーの下に余白を作り要素が潜り込まないように */
+}
+
+/* 日付行：本日のレース画像の直下に出す */
+.todayRaceFrame .todayRaceDateRow{
+  margin-top: 6px;     /* タイトル画像の下に少し余白 */
+  margin-bottom: 10px; /* レース一覧の上に余白 */
+  padding-left: 6px;   /* ほんの少し右へ寄せる */
+}
+
+.todayRaceFrame .raceListBlock{
+  display:block;
+}
+.todayRaceFrame .raceListLabel{
+  font-weight:800;
+  margin-bottom:8px;
+}
+
+.todayRaceFrame .venueChips{
+  display:flex;
+  gap:12px;
+  overflow:auto;
+  padding-bottom:6px;
+}
+.todayRaceFrame .venueChips::-webkit-scrollbar{ height:8px; }
+.todayRaceFrame .venueChips::-webkit-scrollbar-thumb{ background: rgba(0,0,0,0.08); border-radius: 8px; }
+
+.todayRaceFrame .venueChip{
+  border-radius: 14px;
+  padding: 10px 16px;
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: rgba(255,255,255,0.94);
+  border: 1px solid rgba(0,0,0,0.06);
+  white-space: nowrap;
+  font-weight:700;
+  font-size: 14px;
+}
+.todayRaceFrame .venueChip.isActive{
+  outline: 2px solid rgba(47,107,255,0.12);
+  box-shadow: 0 8px 22px rgba(16,24,40,0.06);
+}
+
+.todayRaceFrame .raceNoRow{ display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
+.todayRaceFrame .raceNoBtn{
+  border-radius: 999px;
+  padding: 10px 14px;
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.92);
+  border: 1px solid var(--line);
+  cursor: pointer;
+  font-weight:700;
+  font-size: 14px;
+}
+
+@media (max-width: 520px){
+  .todayRaceFrame .venueChip{
+    padding: 8px 12px;
+    min-height: 36px;
+    font-size: 13px;
+  }
+  .todayRaceFrame .raceNoBtn{
+    padding: 8px 12px;
+    min-height: 36px;
+    font-size: 13px;
+  }
+}
+.todayRaceFrame .raceNoBtn.isActive{ background: var(--accent); color:#fff; border-color: transparent; }
+.todayRaceFrame .raceNoBtn.hasData{ box-shadow: inset 0 -4px 0 rgba(0,0,0,0.03); }
+
+.todayRaceFrame .raceDetailCard,
+.todayRaceFrame .raceInputCard{
+  background: rgba(255,255,255,0.78);
+  border-radius: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  padding: 16px;
+}
+.todayRaceFrame .raceDetailCard .placeholder{ color: var(--muted); padding: 18px; }
+
+.todayRaceFrame .jsonTextarea{
+  width:100%;
+  min-height:140px;
+  border-radius:12px;
+  padding:12px;
+  border:1px solid var(--line);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  background: #fff;
+  resize: vertical;
+}
+
+.todayRaceFrame .btnRow{ display:flex; gap:10px; margin-top:12px; }
+.todayRaceFrame .btnSave,
+.todayRaceFrame .btnClear{ padding:8px 12px; border-radius:12px; cursor:pointer; font-weight:800; }
+.todayRaceFrame .btnSave{ background: var(--accent); color:#fff; border:none; }
+.todayRaceFrame .btnClear{ background:#fff; border:1px solid var(--line); }
+.todayRaceFrame .saveHint{ margin-top:8px; color:var(--muted); font-size:13px; }
+
+.todayRaceFrame .chipEmpty{ color:var(--muted); padding:8px 0; }
+
+/* Responsive tweaks */
+@media (max-width: 720px){
+  .grid{ grid-template-columns: 1fr; }
+}
+
+/* --- WinTicket-like race card styles (scoped) --- */
+.todayRaceFrame #todayRaceDetail .raceCard{
+  border-radius: 16px;
+  padding: 14px 14px 10px;
+  background: rgba(255,255,255,0.78);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.12);
+}
+
+.todayRaceFrame #todayRaceDetail .raceTitle{
+  display:flex;
+  align-items: baseline;
+  gap: 10px;
+  font-weight: 800;
+}
+
+.todayRaceFrame #todayRaceDetail .raceNo{
+  font-size: 18px;
+  padding: 2px 10px;
+  border-radius: 10px;
+  background: rgba(0,0,0,0.08);
+}
+
+
+/* =========================
+   EX WINTICKET LOOK
+========================= */
+
+.todayRaceFrame .raceTabBody[data-tab-body="ex"] table.exTable{
+  background: rgba(255,255,255,0.98);
+  font-size: 12px;
+}
+
+.todayRaceFrame .raceTabBody[data-tab-body="ex"] th,
+.todayRaceFrame .raceTabBody[data-tab-body="ex"] td{
+  border: 1px solid rgba(0,0,0,0.10);
+  padding: 8px 10px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 1.2;
+}
+
+/* ヘッダー */
+.todayRaceFrame .raceTabBody[data-tab-body="ex"] thead th{
+  font-weight: 900;
+  background: rgba(0,0,0,0.04);
+}
+
+/* 行の視認性 */
+.todayRaceFrame .raceTabBody[data-tab-body="ex"] tbody tr:nth-child(even){
+  background: rgba(0,0,0,0.015);
+}
+.todayRaceFrame .raceTabBody[data-tab-body="ex"] tbody tr:hover{
+  background: rgba(47,107,255,0.06);
+}
+
+/* 列幅（ここで“スカスカ”が消える） */
+.todayRaceFrame .raceTabBody[data-tab-body="ex"] th.sticky-col,
+.todayRaceFrame .raceTabBody[data-tab-body="ex"] td.sticky-col{
+  width: 250px;
+  text-align: left;
+  box-shadow: 6px 0 10px rgba(0,0,0,0.05);
+}
+
+.todayRaceFrame .raceTabBody[data-tab-body="ex"] .colRate{
+  width: 140px;
+}
+.todayRaceFrame .raceTabBody[data-tab-body="ex"] .colStat{
+  width: 220px;
+}
+
+/* 率セル：%を強く、括弧を薄く */
+.todayRaceFrame .raceTabBody[data-tab-body="ex"] .rateCell{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:2px;
+}
+.todayRaceFrame .raceTabBody[data-tab-body="ex"] .rate-pct{
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+}
+.todayRaceFrame .raceTabBody[data-tab-body="ex"] .rate-detail{
+  font-size: 11px;
+  color: rgba(0,0,0,0.55);
+}
+
+/* 成績セル：4行を詰めて読みやすく */
+.todayRaceFrame .raceTabBody[data-tab-body="ex"] .stat-row{
+  display:flex;
+  justify-content:center;
+  gap:6px;
+}
+.todayRaceFrame .raceTabBody[data-tab-body="ex"] .stat-label{
+  font-size: 10px;
+  color: rgba(0,0,0,0.55);
+  min-width: 26px;
+  text-align: right;
+}
+.todayRaceFrame .raceTabBody[data-tab-body="ex"] .stat-value{
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+}
+.todayRaceFrame .raceTabBody[data-tab-body="ex"] .stat-detail{
+  font-size: 10px;
+  color: rgba(0,0,0,0.55);
+}
+
+/* スクロールバーを少し“ウィンチケットっぽく薄く” */
+.todayRaceFrame .raceTabBody[data-tab-body="ex"] .exTableWrap::-webkit-scrollbar{
+  height: 10px;
+}
+.todayRaceFrame .raceTabBody[data-tab-body="ex"] .exTableWrap::-webkit-scrollbar-thumb{
+  background: rgba(0,0,0,0.28);
+  border-radius: 999px;
+}
+
+.todayRaceFrame #todayRaceDetail .raceName{ font-size: 18px; }
+.todayRaceFrame #todayRaceDetail .raceClass{
+  font-size: 12px; opacity: .8; padding: 2px 8px; border-radius: 999px; background: rgba(0,0,0,0.06);
+}
+
+.todayRaceFrame #todayRaceDetail .raceMeta{ margin-top: 6px; display:flex; flex-wrap:wrap; gap: 10px; font-size: 12px; opacity: .85; }
+.todayRaceFrame #todayRaceDetail .raceLine{ margin-top: 8px; font-size: 12px; opacity: .9; }
+
+.todayRaceFrame #todayRaceDetail .raceTabs{ margin-top: 10px; display:flex; gap: 8px; }
+.todayRaceFrame #todayRaceDetail .tabBtn{ border: 1px solid rgba(0,0,0,0.12); background: rgba(255,255,255,0.65); padding: 6px 10px; border-radius: 999px; cursor: pointer; font-size: 12px; }
+.todayRaceFrame #todayRaceDetail .tabBtn.is-active{ background: rgba(0,0,0,0.08); font-weight: 700; }
+.todayRaceFrame #todayRaceDetail .raceTabBody{ margin-top: 10px; }
+.todayRaceFrame #todayRaceDetail .raceTabBody.is-hidden{ display:none; }
+
+.todayRaceFrame #todayRaceDetail .rtTable{ display:flex; flex-direction:column; gap: 10px; }
+.todayRaceFrame #todayRaceDetail .rtRow{ display:flex; gap: 10px; padding: 10px; border-radius: 12px; background: rgba(255,255,255,0.65); border: 1px solid rgba(0,0,0,0.08); }
+.todayRaceFrame #todayRaceDetail .rtLeft{ display:flex; gap: 10px; min-width: 280px; }
+.todayRaceFrame #todayRaceDetail .rtName{ font-weight: 800; font-size: 14px; }
+.todayRaceFrame #todayRaceDetail .rtSub{ font-size: 11px; opacity: .85; margin-top: 2px; }
+.todayRaceFrame #todayRaceDetail .rtMid{ display:flex; flex-wrap:wrap; gap: 6px; align-content:flex-start; }
+.todayRaceFrame #todayRaceDetail .rtRight{ margin-left:auto; display:flex; flex-direction:column; gap: 6px; min-width: 220px; }
+.todayRaceFrame #todayRaceDetail .chip{ font-size: 11px; padding: 3px 8px; border-radius: 999px; background: rgba(0,0,0,0.06); }
+.todayRaceFrame #todayRaceDetail .rtComment{ font-size: 11px; opacity: .9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.todayRaceFrame #todayRaceDetail .carBadge{ width: 34px; height: 34px; border-radius: 10px; display:flex; align-items:center; justify-content:center; font-weight: 900; border: 1px solid rgba(0,0,0,0.18); flex: 0 0 auto; }
+.todayRaceFrame #todayRaceDetail .car-1{ background:#fff; color:#111; }
+.todayRaceFrame #todayRaceDetail .car-2{ background:#111; color:#fff; }
+.todayRaceFrame #todayRaceDetail .car-3{ background:#d33; color:#fff; }
+.todayRaceFrame #todayRaceDetail .car-4{ background:#2b6cff; color:#fff; }
+.todayRaceFrame #todayRaceDetail .car-5{ background:#ffd400; color:#111; }
+.todayRaceFrame #todayRaceDetail .car-6{ background:#1fb35b; color:#fff; }
+.todayRaceFrame #todayRaceDetail .car-7{ background:#ff7a00; color:#fff; }
+.todayRaceFrame #todayRaceDetail .car-8{ background:#ff6fb3; color:#111; }
+.todayRaceFrame #todayRaceDetail .car-9{ background:#7a3cff; color:#fff; }
+
+.todayRaceFrame #todayRaceDetail .debugJson{ margin-top: 10px; font-size: 12px; opacity: .9; }
+.todayRaceFrame #todayRaceDetail .debugJson pre{ max-height: 240px; overflow:auto; background: rgba(0,0,0,0.06); padding: 10px; border-radius: 12px; }
+
+/* zenken / ex / past styles */
+.preInspectionCards{
+  display:flex;
+  flex-direction:column;
+  gap:0;
+  margin-top:14px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.92);
+  padding: 10px 0;
+  box-shadow: 0 20px 45px rgba(0,0,0,0.15);
+}
+.zenkenCard{
+  padding: 14px 20px;
+  border-top: 1px solid rgba(0,0,0,0.08);
+  background: transparent;
+}
+.zenkenCard:first-child{
+  border-top: none;
+}
+.zenkenCard__top{
+  display:flex;
+  gap:16px;
+  align-items:center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+.zenkenCard__number{
+  width:44px;
+  height:44px;
+  font-weight:800;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  border-radius:10px;
+  text-shadow:0 1px 4px rgba(0,0,0,0.35);
+}
+.zenkenCard__title{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+.zenkenCard__name{
+  font-weight:700;
+  font-size:16px;
+}
+.zenkenCard__meta{
+  font-size:13px;
+  color:#717789;
+}
+.zenkenCard__comment{
+  margin:14px 0 0;
+  line-height:1.7;
+  color:#1b1f2a;
+  word-break: break-word;
+}
+@media (max-width: 640px){
+  .zenkenCard{ padding: 12px 16px; }
+  .zenkenCard__top{ gap:10px; }
+  .zenkenCard__number{ width:38px; height:38px; font-size:16px; }
+}
+.todayRaceFrame #todayRaceDetail .zenkenText{ white-space: pre-wrap; font-size:13px; line-height:1.45; }
+.todayRaceFrame #todayRaceDetail .exPre{ white-space: pre-wrap; background: rgba(255,255,255,0.9); padding:10px; border-radius:8px; border:1px solid rgba(0,0,0,0.06); }
+.todayRaceFrame #todayRaceDetail .pastBlocks details{ margin-top:8px; }
+
+/* recent results styling */
+.todayRaceFrame #todayRaceDetail .recentList{ display:flex; flex-direction:column; gap:12px; }
+.todayRaceFrame #todayRaceDetail .recentCard{ padding:8px; border-radius:12px; background: rgba(255,255,255,0.62); border:1px solid rgba(0,0,0,0.06); }
+.todayRaceFrame #todayRaceDetail .recentTop{ display:flex; align-items:center; gap:12px; }
+.todayRaceFrame #todayRaceDetail .recentTop .rtLeft{ min-width: 260px; display:flex; gap:10px; align-items:center; }
+.todayRaceFrame #todayRaceDetail .recentTop .rtRightSmall{ margin-left:auto; display:flex; gap:6px; align-items:center; }
+.todayRaceFrame #todayRaceDetail .recentTop .rtRightSmall .chip{ font-size:11px; padding:4px 6px; border-radius:999px; background: rgba(0,0,0,0.06); }
+
+/* recent chips row */
+.todayRaceFrame #todayRaceDetail .recentChips{ display:flex; gap:10px; overflow-x:auto; -webkit-overflow-scrolling:touch; padding:8px 6px; margin-top:8px; }
+.todayRaceFrame #todayRaceDetail .recentChips::-webkit-scrollbar{ height:8px; }
+.todayRaceFrame #todayRaceDetail .recentChips::-webkit-scrollbar-thumb{ background: rgba(0,0,0,0.06); border-radius:8px; }
+.todayRaceFrame #todayRaceDetail .recentChip{ flex: 0 0 auto; min-width: 76px; max-width: 92px; height: 52px; border-radius:10px; background: #fff; border:1px solid rgba(0,0,0,0.06); display:flex; flex-direction:column; align-items:center; justify-content:center; box-shadow: 0 6px 12px rgba(16,24,40,0.06); padding:6px; }
+.todayRaceFrame #todayRaceDetail .recentChip .rcTop{ font-weight:900; font-size:14px; line-height:1; }
+.todayRaceFrame #todayRaceDetail .recentChip .rcBottom{ font-size:11px; opacity:.6; margin-top:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+/* 当場成績（trackResults）専用：直近成績UIを流用しつつスコープを限定 */
+.todayRaceFrame #todayRaceDetail .trackResultsList{ display:flex; flex-direction:column; gap:12px; }
+.todayRaceFrame #todayRaceDetail .trackRow{ padding:8px; border-radius:12px; background: rgba(255,255,255,0.62); border:1px solid rgba(0,0,0,0.06); display:flex; gap:12px; align-items:center; }
+.todayRaceFrame #todayRaceDetail .trackRow .rtLeft{ min-width:260px; display:flex; gap:10px; align-items:center; }
+.todayRaceFrame #todayRaceDetail .trackChipsEmpty{ color:var(--muted); font-size:13px; padding:8px; }
+.todayRaceFrame #todayRaceDetail .trackRow .recentChips{ margin-top:0; }
+
+/* 当場成績：1開催カードを少し広げる（複数着順を1列で見せる） */
+.todayRaceFrame #todayRaceDetail .trackRow .recentChip{
+  min-width: 150px;
+  max-width: 190px;
+  height: 56px;
+}
+
+.todayRaceFrame #todayRaceDetail .trackRow .recentChip .rcTop{
+  width: 100%;
+}
+
+.todayRaceFrame #todayRaceDetail .trackRow .recentChip .rcChips{
+  display: flex;
+  flex-wrap: nowrap;     /* ★折り返し禁止 */
+  gap: 4px;
+  justify-content: center;
+  align-items: center;
+
+  overflow-x: auto;      /* 多い時はここだけ横スクロール */
+  scrollbar-width: none;
+}
+.todayRaceFrame #todayRaceDetail .trackRow .recentChip .rcChips::-webkit-scrollbar{
+  display:none;
+}
+
+.todayRaceFrame #todayRaceDetail .trackRow .recentChip .rcMini{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.06);
+  font-weight: 900;
+  font-size: 12px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+
+
+/* JSON file import UI (scoped to todayRaceFrame) */
+.todayRaceFrame .json-import{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  margin: 8px 0 12px;
+  flex-wrap:wrap;
+}
+.todayRaceFrame .json-import__label{ font-weight:700; font-size:13px; }
+.todayRaceFrame .json-import__msg{ font-size:13px; color:var(--muted); }
+.todayRaceFrame .json-import__msg.is-ok{ color: green; opacity: .95; }
+.todayRaceFrame .json-import__msg.is-ng{ color: #c23; opacity: .95; }
+
+/* =========================
+   EX FINAL OVERRIDE (single source)
+   横スクロールは exTableWrap に閉じ込める
+========================= */
+.todayRaceFrame .raceTabBody[data-tab-body="ex"]{
+  overflow-x: hidden !important;   /* 横だけ封じる */
+  overflow-y: visible !important;  /* 縦は見える＝stickyの基準がページに戻る */
+  min-width: 0 !important;         /* Grid内で縮められるようにする */
+}
+
+.todayRaceFrame .raceTabBody[data-tab-body="ex"] .exTableShell{
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+}
+
+.todayRaceFrame .raceTabBody[data-tab-body="ex"] .exTableWrap{
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;            /* 重要：flex配下で縮める */
+  overflow-x: auto !important;        /* 横スクロールはここ */
+  overflow-y: hidden !important;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-gutter: stable;
+  padding-bottom: 6px;                /* スクロールバーが潰れない保険 */
+}
+
+.todayRaceFrame .raceTabBody[data-tab-body="ex"] .exTableInner{
+  display: block !important;
+  width: max-content !important;
+  min-width: max-content !important;
+}
+
+.todayRaceFrame .raceTabBody[data-tab-body="ex"] table.exTable{
+  width: max-content !important;
+  min-width: max-content !important;
+  table-layout: fixed !important;
+  border-collapse: collapse !important;
+}
+
+.todayRaceFrame .raceTabBody[data-tab-body="ex"] th,
+.todayRaceFrame .raceTabBody[data-tab-body="ex"] td{
+  white-space: nowrap !important;
+  writing-mode: horizontal-tb !important;
+}
+
+.todayRaceFrame .raceTabBody[data-tab-body="ex"] th.sticky-col,
+.todayRaceFrame .raceTabBody[data-tab-body="ex"] td.sticky-col{
+  position: sticky;
+  left: 0;
+  z-index: 5;
+  background: rgba(255,255,255,0.98);
+}
+
+.todayRaceFrame .raceTabBody[data-tab-body="ex"] .exScrollBar{
+  display: flex !important;
+  gap: 10px;
+  justify-content: flex-end;
+  align-items: center;
+  position: sticky !important;
+  top: 0 !important;
+  bottom: auto !important;
+  z-index: 50 !important;
+  padding: 8px 10px;
+  background: rgba(255,255,255,0.96);
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+
+.todayRaceFrame .raceTabBody[data-tab-body="ex"] .exScrollBtn,
+.todayRaceFrame .raceTabBody[data-tab-body="ex"] .exToggleBtn{
+  border: 1px solid rgba(0,0,0,0.18);
+  background: #fff;
+  border-radius: 10px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+/* when collapsed hide stat columns */
+.todayRaceFrame .raceTabBody[data-tab-body="ex"] .exTableShell.is-collapsed th.colStat,
+.todayRaceFrame .raceTabBody[data-tab-body="ex"] .exTableShell.is-collapsed td.colStat{
+  display:none !important;
+}
+
+
+/* build badge (visible indicator that the served CSS includes our changes) */
+#buildBadge{
+  position: fixed;
+  top: 8px;
+  right: 8px;
+  z-index: 2147483647;
+  background: rgba(0,0,0,0.78);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Hiragino Sans", "Noto Sans JP", "Yu Gothic", sans-serif;
+  pointer-events: none;
+}
+
+/* Strong visual fallback: always show scrollbar for EX wrap */
+.page-today .todayRaceFrame #todayRaceDetail .raceTabBody[data-tab-body="ex"] .exTableWrap{
+  overflow-x: scroll !important;
+}
+
+/* Ensure the today race inner grid doesn't force wide columns
+   and allow its children to shrink (prevents min-width propagation). */
+.todayRaceFrame .todayRaceInner{
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+.todayRaceFrame .todayRaceInner > *{
+  min-width: 0 !important;
+}
+
+/* =========================
+   RECENT (直近成績) WINTICKET LIKE
+========================= */
+
+.todayRaceFrame #todayRaceDetail .raceTabBody[data-tab-body="recent"]{ min-width:0; }
+
+.todayRaceFrame #todayRaceDetail .recentTableShell{
+  background: rgba(255,255,255,0.62);
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 12px;
+  padding: 8px;
+}
+
+.todayRaceFrame #todayRaceDetail .recentTableHeader{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:8px;
+}
+
+.todayRaceFrame #todayRaceDetail .recentHint{
+  font-weight:900;
+  font-size:12px;
+  opacity:.7;
+}
+
+.todayRaceFrame #todayRaceDetail .recentScrollBtns{
+  display:flex; gap:6px; align-items:center;
+}
+.todayRaceFrame #todayRaceDetail .recentScrollBtn{
+  padding:6px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(255,255,255,0.9);
+  cursor:pointer;
+}
+
+.todayRaceFrame #todayRaceDetail .recentTableWrap{
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 10px;
+}
+
+.todayRaceFrame #todayRaceDetail .recentTable{
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: max-content;
+  min-width: 100%;
+  background: rgba(255,255,255,0.98);
+}
+
+.todayRaceFrame #todayRaceDetail .recentTable th,
+.todayRaceFrame #todayRaceDetail .recentTable td{
+  border: 1px solid rgba(0,0,0,0.10);
+  padding: 8px 10px;
+  text-align: center;              /* ✅ 中央揃え */
+  vertical-align: middle;
+  font-size: 12px;
+}
+
+.todayRaceFrame #todayRaceDetail .recentTable thead th{
+  background: rgba(0,0,0,0.04);
+  font-weight: 900;
+  position: sticky;
+  top: 0;
+  z-index: 3;
+}
+
+.todayRaceFrame #todayRaceDetail .recentTable tbody tr:nth-child(even){
+  background: rgba(0,0,0,0.015);
+}
+
+.todayRaceFrame #todayRaceDetail .recentTable .rrCol{ width: 120px; }
+.todayRaceFrame #todayRaceDetail .recentTable .rrIma{ background: rgba(47,107,255,0.06); }
+
+.todayRaceFrame #todayRaceDetail .recentTable .rrCell .rrTop{
+  font-weight: 900;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.05;
+  white-space: nowrap; /* keep chips one line */
+}
+
+.todayRaceFrame #todayRaceDetail .recentTable .rrCell .rrBottom{
+  font-size: 11px;
+  opacity: .65;
+  margin-top: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 104px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.todayRaceFrame #todayRaceDetail .recentTable .rrCell .rrChips{
+  display: inline-flex;
+  flex-wrap: nowrap; /* do not wrap */
+  gap: 3px;
+  align-items: center;
+  justify-content: center;
+  max-width: 104px;
+  overflow: hidden;
+}
+
+.todayRaceFrame #todayRaceDetail .recentTable .rrCell .rrChip{
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 18px;
+  min-width: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.06);
+  font-weight: 900;
+  font-size: 12px;
+  line-height: 1;
+}
+
+/* S/B small marker in chip */
+.todayRaceFrame #todayRaceDetail .recentTable .rrCell .rrChip .rrSB{
+  position:absolute;
+  top:1px;
+  right:2px;
+  font-size:9px;
+  font-weight:900;
+  opacity:.75;
+  line-height:1;
+}
+
+/* ✅ sticky 左列（車番＋選手） */
+.todayRaceFrame #todayRaceDetail .recentTable .rrSticky{
+  position: sticky;
+  left: 0;
+  z-index: 4;
+  background: rgba(255,255,255,0.98);
+  text-align: left;
+  width: 260px;
+  min-width: 260px;
+  box-shadow: 6px 0 10px rgba(0,0,0,0.05);
+}
+
+.todayRaceFrame #todayRaceDetail .rrNameWrap{
+  display:flex; align-items:center; gap:10px;
+}
+.todayRaceFrame #todayRaceDetail .rrNameText .rrName{ font-weight: 900; }
+.todayRaceFrame #todayRaceDetail .rrNameText .rrSub{ font-size:11px; opacity:.65; }
+
+/* scrollbarを薄く */
+.todayRaceFrame #todayRaceDetail .recentTableWrap::-webkit-scrollbar{ height: 10px; }
+.todayRaceFrame #todayRaceDetail .recentTableWrap::-webkit-scrollbar-thumb{
+  background: rgba(0,0,0,0.28);
+  border-radius: 999px;
+}
+
+/* =========================
+   VENUES PAGE BACKGROUND
+========================= */
+.venuesPage.has-overlay{
+  position: relative;
+  isolation: isolate; /* 疑似要素の重なりを安定させる */
+}
+
+/* 背景画像（会場一覧背景.png）を敷く：overlayの下に回す */
+.venuesPage.has-overlay::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background-image: url("./assets/会場一覧背景.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: -1;
+  pointer-events:none;
+}
+
+/* =========================
+   MENU PAGE BACKGROUND
+   会場一覧おおもと背景.png
+========================= */
+.menuPage{
+  position: relative;
+  isolation: isolate; /* 擬似要素の重なりを安定させる */
+  min-height: 100vh;
+  width: min(880px, 92vw);
+  margin: 18px auto 60px;
+}
+
+/* 背景（画面全体） */
+/* (Removed global menuPage pseudo-backgrounds - body background is authoritative) */
+
+/* =========================
+   MENU ボタン化（横長カードをやめる）
+   ※PC前提
+========================= */
+
+/* メニュー全体の幅は中央寄せのまま */
+.menuPage{
+  width: 880px;
+  margin: 18px auto 60px;
+}
+
+/* 4ボタン横並び */
+.menuPage .grid{
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  align-items: stretch;
+}
+
+/* 4ボタン（カードをボタン風に） */
+.menuPage .grid .card{
+  flex: 0 0 190px;          /* 1個あたりの幅（好みで180〜210） */
+  padding: 14px 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.55);
+  background: rgba(255,255,255,0.78); /* ガラスっぽい白 */
+  box-shadow: 0 10px 26px rgba(0,0,0,0.12);
+  backdrop-filter: blur(3px);
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+}
+
+/* タイトル（会場メモとか） */
+.menuPage .grid .card h3{
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: .02em;
+}
+
+/* 説明文 */
+.menuPage .grid .card p{
+  margin: 0;
+  font-size: 12px;
+  opacity: .75;
+  line-height: 1.35;
+}
+
+/* ホバーで“おしゃれ”に浮く */
+.menuPage .grid .card:hover{
+  transform: translateY(-3px);
+  background: rgba(255,255,255,0.90);
+  box-shadow: 0 14px 34px rgba(0,0,0,0.16);
+}
+
+/* クリック感 */
+.menuPage .grid .card:active{
+  transform: translateY(-1px);
+}
+
+/* 横長になってる要素があれば高さを揃える */
+.menuPage .grid .card{
+  min-height: 88px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* リンク全体をボタン化（必要なら有効化） */
+.menuPage .grid .card a{
+  display:block;
+  color: inherit;
+  text-decoration: none;
+}
+
+/* カード--menu 内で少し上に寄せる（オプション） */
+.menuPage .card--menu{
+  padding-top: 22px;
+}
+
+.menuPage .menuHeader{
+  margin-bottom: 10px;
+}
+
+/* =========================
+   MENU: 2×2 配列（横長タブを卒業）
+========================= */
+.page.menuPage .card--menu .grid{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 22px;
+
+  /* ボタンが横に伸びすぎないように中央で止める */
+  max-width: 560px;
+  margin: 18px auto 0;
+}
+
+.page.menuPage .card--menu .btn{
+  width: 100%;
+  min-height: 92px;
+  border-radius: 18px;
+  padding: 16px 14px;
+}
+
+/* ちょい可愛く、読みやすく */
+.page.menuPage .card--menu .btn__title{
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.page.menuPage .card--menu .btn__meta{
+  font-size: 12px;
+  opacity: .75;
+}
+
+/* =========================
+   MENUの白枠：下に余白を作る（黒枠イメージ分）
+========================= */
+.page.menuPage .card--menu{
+  padding-bottom: 46px;   /* ←ここで下余白（好みで 36〜60） */
+}
+
+/* ついでに上下も少し整えるなら */
+.page.menuPage .card--menu{
+  padding-top: 26px;      /* 既にあるなら不要。上も気になる時だけ */
+}
+
+/* =========================
+   MENU：画像タブ化
+========================= */
+.page.menuPage .card--menu .btn{
+  /* 画像にするので枠や余計なpaddingは消す */
+  padding: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+}
+
+/* 画像タブを“枠に綺麗にフィット”させる */
+.page.menuPage .card--menu .menuTabImg{
+  display: block;
+  width: 100%;
+  height: auto;
+
+  /* ボタンサイズを安定させる：2×2に合う大きさ */
+  max-width: 240px;      /* 必要なら 220〜280で調整 */
+}
+
+/* ホバーで少しだけ上品に */
+.page.menuPage .card--menu .btn:hover .menuTabImg{
+  transform: translateY(-1px);
+}
+.page.menuPage .card--menu .menuTabImg{
+  transition: transform .12s ease, filter .12s ease;
+}
+.page.menuPage .card--menu .btn:active .menuTabImg{
+  transform: translateY(0px) scale(0.99);
+}
+
+/* =========================
+   レース予想：枠内だけ背景＋オーバーレイ（他タブに波及しない）
+========================= */
+.predictPage { padding: 18px 0 26px; }
+
+.predictPage .card{
+  width: min(1100px, 92vw);
+  margin: 0 auto;
+}
+
+.card--predict{
+  position: relative;
+  overflow: hidden;
+}
+
+.card--predict::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:0;
+  background:
+    url("assets/レース予想_オーバーレイ.png") center/cover no-repeat,
+    url("assets/yosoupuronntohaikei.png") center 25%/cover no-repeat;
+  opacity: .85;  /* 背景を濃く見せる */
+}
+
+.card--predict::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:1;
+  background: rgba(255,255,255,0.55); /* 霧を薄く */
+}
+
+.card--predict > *{
+  position: relative;
+  z-index: 2;
+}
+
+.predictRow{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  flex-wrap:wrap;
+  margin: 10px 0;
+}
+
+.predictRow .select,
+.predictRow .input{
+  width: min(360px, 100%);
+}
+
+/* weatherBox styling */
+.predictPage .weatherBox{
+  background: rgba(255,255,255,0.9);
+  border: 1px solid rgba(0,0,0,0.06);
+  padding: 10px 12px;
+  border-radius: 12px;
+  color: #111;
+  font-size: 13px;
+}
+
+/* Today weather */
+.todayWeatherRow{
+  display:flex;
+  justify-content:center;
+  margin: 6px 0 10px;
+}
+.todayWeatherBox{
+  background: rgba(255,255,255,.75);
+  border: 1px solid rgba(150,160,200,.45);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 13px;
+  color: #223;
+  box-shadow: 0 2px 10px rgba(0,0,0,.06);
+  white-space: pre-wrap;
+  font-family: "Consolas", "Menlo", "Courier New", monospace;
+  font-weight: 500;
+}
+.todayWeatherBox.is-loading{ opacity: .85; }
+.todayWeatherBox.is-error{
+  background: rgba(255,235,235,.85);
+  border-color: rgba(240,120,120,.55);
+}
+
+/* Weather pins input (Today bottom) */
+.weatherPinsBlock{
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed rgba(160,170,200,.55);
+}
+
+/* Today weather layout: keep box inside header/date row and left-aligned */
+.todayRaceDateRow{
+  display:flex;
+  align-items:flex-start;
+  justify-content:flex-start;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.todayRaceFrame .todayWeatherBox{
+  flex: 1 1 520px;
+  max-width: 680px;
+  max-height: 260px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,.08);
+  background: rgba(255,255,255,.70);
+  color:#111;
+  font-size:12px;
+  line-height:1.35;
+  text-align:left;
+  white-space:pre;
+}
+.todayRaceFrame .todayWeatherBox.is-loading{opacity:.75;}
+.todayRaceFrame .todayWeatherBox.is-error{background: rgba(255,220,220,.80);}
+/* Table styling for hourly weather */
+.todayRaceFrame .todayWeatherBox .wxHead{ display:flex; gap:10px; align-items:baseline; }
+.todayRaceFrame .todayWeatherBox .wxTitle{ font-weight: 900; }
+.todayRaceFrame .todayWeatherBox .wxSub{ font-size: 12px; color: rgba(0,0,0,0.55); }
+.todayRaceFrame .todayWeatherBox .wxScroll{
+  max-height: none;
+  overflow: visible;
+  padding-right: 0;
+}
+.todayRaceFrame .todayWeatherBox .wxTable{
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 6px;
+  font-size: 12px;
+}
+.todayRaceFrame .todayWeatherBox th{
+  text-align:left;
+  padding: 0 6px;
+  color: rgba(0,0,0,0.55);
+  font-weight: 800;
+}
+.todayRaceFrame .todayWeatherBox td{
+  background: rgba(255,255,255,0.90);
+  padding: 6px 8px;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+.todayRaceFrame .todayWeatherBox .wxTime{ width: 58px; }
+.todayRaceFrame .todayWeatherBox .wxTemp{ width: 64px; }
+.todayRaceFrame .todayWeatherBox .wxWind{ width: 84px; }
+.todayRaceFrame .todayWeatherBox .wxGust{ width: 78px; }
+.todayRaceFrame .todayWeatherBox .wxError{ font-weight: 800; color:#7a1b1b; }
+
+/* === Result pills（着順 + SB） === */
+.rrTop{ display:flex; justify-content:center; white-space:nowrap; }
+.rrBottom{ font-size:12px; opacity:.75; margin-top:4px; text-align:center; }
+
+.rrPills{
+  display:flex;
+  flex-wrap:nowrap;
+  gap:4px;
+  overflow-x:auto;
+  overflow-y:hidden;
+  padding:2px 0;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none; /* Firefox */
+}
+.rrPills::-webkit-scrollbar{ display:none; }
+
+.rrPill{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:22px;
+  height:22px;
+  padding:0 7px;
+  border-radius:999px;
+  background:rgba(0,0,0,0.06);
+  border:1px solid rgba(0,0,0,0.08);
+  font-weight:700;
+  line-height:1;
+  flex:0 0 auto;
+}
+.rrPillPos{ font-size:12px; }
+
+.rrPillSb{
+  position:absolute;
+  top:-6px;
+  right:-4px;
+  font-size:9px;
+  font-weight:800;
+  padding:0 3px;
+  border-radius:8px;
+  background:#fff;
+  border:1px solid rgba(0,0,0,0.12);
+  line-height:1.1;
+}
+
+.rrDash{ opacity:.55; }
+.todayRaceFrame .todayWeatherBox .wxLoading{ font-weight: 800; }
+
+/* =========================
+   Predict header + button polish（predict内だけ）
+========================= */
+
+.predictHeaderBar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding: 10px 10px 12px;
+  margin-bottom: 8px;
+
+  background: rgba(255,255,255,0.55);
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 14px;
+
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.predictHeaderLeft{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-width: 0;
+}
+
+.predictTitleImg{
+  height: 64px;
+  width: auto;
+  display:block;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,.10));
+}
+
+.predictHeaderText{ min-width:0; }
+.predictTitleText{
+  font-weight: 900;
+  font-size: 16px;
+  line-height: 1.1;
+}
+.predictSteps{
+  margin-top: 4px;
+  color: rgba(0,0,0,.60);
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.predictHeaderRight{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+/* 戻る（画像） */
+.predictBackBtn{
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  line-height: 0;
+  cursor: pointer;
+}
+.predictBackBtn img{
+  width: 190px; /* todayBackBtn と揃える */
+  height: auto;
+  display:block;
+}
+@media (max-width: 520px){
+  .predictBackBtn img{ width: 160px; }
+  .predictTitleImg{ height: 54px; }
+}
+
+/* ChatGPTリンクボタン */
+.predictChatBtn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  padding: 10px 14px;
+  border-radius: 12px;
+
+  background: rgba(47,107,255,0.10);
+  border: 1px solid rgba(47,107,255,0.25);
+  color: #1b2a62;
+  font-weight: 800;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.predictChatBtn:hover{ transform: translateY(-1px); }
+
+/* predict内の .btn を“横並びボタン”に上書き（メニューの .btn は触らない） */
+.predictPage .btn{
+  width: auto;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 12px;
+}
+.predictPage .btn:hover{
+  transform: translateY(-1px);
+}
+
+/* Fallback: hide any predict footer/nav elements if present */
+.predictFooterNav,
+.predictBottomNav,
+.predictPage .bottomNav,
+.predictPage .pageNavBottom{
+  display: none !important;
+}
+
+/* Styling for players card overlay to improve contrast over background */
+.playersCard{
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.90);
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.10);
+}
+.playerDetail pre{
+  max-height: 280px;
+  overflow:auto;
+  background: rgba(0,0,0,0.05);
+  border-radius: 12px;
+  padding: 10px;
+  white-space: pre-wrap;
+  background-repeat: no-repeat;
+}
+
+/* 選手一覧：ロゴ */
+.playersLogo{
+  height: 78px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,.10));
+}
+
+@media (max-width: 520px){
+  .playersLogo{ height: 66px; }
+}
+
+/* ヘッダー整列 */
+.playersHead{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 0; /* Prevent vertical clipping of larger logo */
+}
+
+.item--click{ cursor:pointer; }
+.item--click:hover{ transform: translateY(-1px); }
+
+/* Force background when .card is globally set to transparent */
+.card.playersCard.has-overlay{
+  background: url("./assets/sennsyuitirannhaikei.png") center/cover no-repeat !important;
+  --overlay-alpha: 0.58;
+}
+
+/* players back button image size (match other pages) */
+.playersBackBtn img{
+  width: 190px;
+  height: auto;
+  display: block;
+}
+@media (max-width: 520px){
+  .playersBackBtn img{ width: 160px; }
+}
+
+/* Remove default button chrome for players back button */
+.playersBackBtn{
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+}
+.playersBackBtn:focus,
+.playersBackBtn:focus-visible{
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Bigger touch targets for venue chips and race buttons to match start list buttons */
+.venueChips .venueChip,
+.todayRaceFrame .venueChip,
+.todayRaceFrame .raceNoBtn,
+.rrPills .rrPill,
+.todayRaceFrame .rcPill{
+  font-size: 16px;
+  padding: 10px 14px;
+  min-height: 40px;
+  border-radius: 12px;
+}
+
+@media (max-width: 520px){
+  .venueChips .venueChip,
+  .todayRaceFrame .raceNoBtn,
+  .rrPills .rrPill{
+    font-size: 15px;
+    padding: 8px 12px;
+    min-height: 36px;
+  }
+}
+.inputTitle--sub{
+  font-size: 12px;
+  opacity: .9;
+  margin-bottom: 6px;
+}
+.weatherPinsRow{
+  display:flex;
+  gap: 8px;
+  align-items:center;
+  flex-wrap: wrap;
+}
+.wxCoordInput{
+  width: 280px;
+  max-width: 100%;
+}
+
+/* 選手一覧：ロゴを確実に大きく（強制上書き） */
+.playersHead .playersLogo{
+  height: 160px !important;   /* increased */
+  width: auto !important;
+  max-height: none !important;
+  max-width: none !important;
+  display: block !important;
+  object-fit: contain !important;
+  transform: scale(1) !important;
+}
+
+/* スマホ */
+@media (max-width: 520px){
+  .playersHead .playersLogo{ height: 120px !important; }
+  .playersHead{ min-height: 130px !important; }
+}
+
+/* ヘッダー領域の高さを確保（ロゴが見切れないように） */
+.playersHead{
+  align-items: flex-start !important;
+  min-height: 170px !important;
+  padding-top: 6px;
+}
+
+
+
+
+
+
+
