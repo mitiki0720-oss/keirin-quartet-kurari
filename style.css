@@ -2503,3 +2503,63 @@ button.btn-save-img{
 
 
 
+
+
+/* =========================
+   Mobile fix: 会場一覧ヘッダー被り + 保存/クリア横並び
+   ========================= */
+@media (max-width: 520px){
+
+  /* ヘッダー内の基準を確実にする（戻る＆ロゴの絶対配置用） */
+  .venuesPage .venuesHeader{
+    position: relative;
+    min-height: 190px; /* 戻る＋ロゴ分の高さ確保 */
+  }
+
+  /* 戻るボタン：右上に固定（上に居てOK） */
+  .venuesPage .backLink{
+    top: 10px;
+    right: 10px;
+    z-index: 5;
+  }
+
+  /* 会場一覧ロゴ：戻るより下へずらす（重なり解消） */
+  .venuesPage .venuesTitle__img{
+    top: 70px;        /* ←ここを 60〜90pxで微調整OK */
+    height: 96px;     /* ←大きければ 80〜110pxで調整OK */
+    z-index: 2;
+  }
+
+  /* 保存・クリア：横一列に固定（縦落ち防止） */
+  .venuesPage .row.row--buttons{
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  /* 2つのボタンを横に収める */
+  .venuesPage #btnSaveVenue,
+  .venuesPage #btnClearVenue{
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 6px 0 !important; /* 画像ボタン周りの余白を減らす */
+  }
+
+  .venuesPage #btnSaveVenue img,
+  .venuesPage #btnClearVenue img{
+    width: 100%;
+    max-width: 170px; /* きつければ 150〜190pxで調整 */
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+}
+
+
+
+
+
+
