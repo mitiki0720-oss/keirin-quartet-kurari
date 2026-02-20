@@ -547,47 +547,44 @@ button.btn-save-img{
 }
 
 /* 画面が狭い時だけ少し縮める（任意） */
+/* ✅ 会場一覧（スマホ）：戻るボタンとタイトル画像が被らないように縦積み */
 @media (max-width: 520px){
-  /* =========================
-     ✅ 会場一覧（スマホ）：戻るボタンと会場一覧画像が被らないようにする
-  ========================= */
-  /* ヘッダーを縦積みにして安全に */
+
+  /* ヘッダーを縦並びにして“重なり”を根本解決 */
   .venuesHeader{
-    min-height: auto;              /* 固定の高さを解除 */
+    min-height: auto;
     padding: 10px 12px 0;
     display: flex;
     flex-direction: column;
-    align-items: center;           /* タイトルは中央寄せ */
+    align-items: stretch;
     gap: 8px;
   }
 
-  /* 会場一覧タイトル画像：absolute解除して通常配置へ */
+  /* タイトル画像は absolute をやめて普通に配置 */
   .venuesPage .venuesTitle{
-    width: 100%;
     display: flex;
     justify-content: center;
   }
   .venuesPage .venuesTitle__img{
-    position: static;              /* ★ここが重要：absolute解除 */
+    position: static;     /* ★重要：absolute解除 */
     top: auto;
     left: auto;
     transform: none;
     margin: 0 auto !important;
-    height: 88px;                  /* 好みで 80〜100px */
+    height: 86px;         /* 好みで 80〜95 */
     z-index: auto;
   }
 
-  /* 戻るボタン：タイトルの下に置く（右寄せ） */
+  /* 戻るボタンはタイトルの下へ（右寄せ） */
   .venuesPage .backLink{
-    position: static;              /* ★ここが重要：absolute解除 */
-    align-self: flex-end;          /* 右寄せ */
+    position: static;     /* ★重要：absolute解除 */
+    align-self: flex-end; /* 右寄せ */
     margin-top: 2px;
-    z-index: 5;                    /* 念のため前面 */
+    z-index: 10;
     pointer-events: auto;
   }
-
   .venuesPage .backLink__img{
-    width: 150px;                  /* 160でもOK。少し小さめ推奨 */
+    width: 140px;         /* 160だと被りやすいので少し小さめ推奨 */
     height: auto;
   }
 }
@@ -595,7 +592,7 @@ button.btn-save-img{
 /* さらに小さい端末の微調整（任意） */
 @media (max-width: 360px){
   .venuesPage .venuesTitle__img{ height: 78px; }
-  .venuesPage .backLink__img{ width: 138px; }
+  .venuesPage .backLink__img{ width: 130px; }
 }
 
 .venuesPage .label,
@@ -1636,6 +1633,9 @@ button.btn-save-img{
   font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Hiragino Sans", "Noto Sans JP", "Yu Gothic", sans-serif;
   pointer-events: none;
 }
+
+/* hide legacy build badge if any residual script left */
+#buildBadge{ display:none !important; }
 
 /* Strong visual fallback: always show scrollbar for EX wrap */
 .page-today .todayRaceFrame #todayRaceDetail .raceTabBody[data-tab-body="ex"] .exTableWrap{
