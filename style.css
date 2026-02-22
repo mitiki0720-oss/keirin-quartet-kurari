@@ -622,6 +622,43 @@ button.btn-save-img{
   }
 }
 
+
+/* =========================
+   MENU（トップ）：スマホ見やすく（余白＋タブ縮小）
+   ========================= */
+@media (max-width: 520px){
+
+  /* 白いオーバーレイ（menuカード）内に左右余白を作る */
+  .page.menuPage .card--menu{
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  /* タブ全体を少し内側＆詰めすぎ防止 */
+  .page.menuPage .card--menu .grid{
+    gap: 12px 14px;      /* 余白を調整 */
+    padding: 0 6px;      /* ← “端と端にくっつく”の主因を潰す */
+    margin-top: 12px;    /* 上の余白も少し */
+    max-width: 420px;    /* スマホでは横に広がりすぎないように */
+  }
+
+  /* タブ画像を一回り小さく */
+  .page.menuPage .card--menu .menuTabImg{
+    max-width: 190px;    /* 240→190（好みで 170〜210） */
+  }
+}
+
+/* さらに小さい端末だけもう一段 */
+@media (max-width: 360px){
+  .page.menuPage .card--menu .grid{
+    gap: 10px 12px;
+    padding: 0 4px;
+  }
+  .page.menuPage .card--menu .menuTabImg{
+    max-width: 175px;
+  }
+}
+
 .venuesPage .label,
 .venuesPage .venuesSection__title{
   color: rgba(0,0,0,0.85);
@@ -2582,6 +2619,79 @@ button.btn-save-img{
     height: auto;
     display: block;
     margin: 0 auto;
+  }
+}
+
+
+
+
+/* =========================
+   ✅ MENU（トップ）を“おしゃれ”に：Mobile glass + spacing
+   ========================= */
+@media (max-width: 520px){
+
+  /* 白いオーバーレイ（メニューの板）自体を“ガラスカード化” */
+  .page.menuPage .card--menu{
+    border-radius: 22px;
+    padding: 16px 16px 18px;
+    background: rgba(255,255,255,0.62);
+    border: 1px solid rgba(255,255,255,0.55);
+    box-shadow: 0 18px 42px rgba(0,0,0,0.14);
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+  }
+
+  /* 内側の余白（端ピタ防止）＋幅を少し絞って“まとまり”を出す */
+  .page.menuPage .card--menu .grid{
+    max-width: 420px;
+    margin: 10px auto 0;
+    padding: 6px 10px 2px; /* ←端と端にくっつく違和感を消す */
+    gap: 12px 14px;
+    align-items: center;
+    justify-items: center;
+  }
+
+  /* タブ（リンク）側にも“押せる感” */
+  .page.menuPage .card--menu .btn{
+    border-radius: 18px;
+    padding: 8px 10px;
+    background: rgba(255,255,255,0.35);
+    border: 1px solid rgba(255,255,255,0.35);
+    box-shadow: 0 10px 22px rgba(0,0,0,0.10);
+    transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+  }
+  .page.menuPage .card--menu .btn:active{
+    transform: translateY(1px) scale(0.99);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.10);
+  }
+
+  /* タブ画像は少し小さく＆くっきり（立体感） */
+  .page.menuPage .card--menu .menuTabImg{
+    max-width: 185px;              /* 好みで 170〜205 */
+    filter: drop-shadow(0 8px 14px rgba(0,0,0,0.18));
+    display: block;
+  }
+
+  /* “メニュー”タイトルも小さく整える（画像があるなら） */
+  .page.menuPage .menuTitleImg{
+    height: 44px;                  /* デカいと野暮ったいので抑える */
+    opacity: 0.95;
+    filter: drop-shadow(0 6px 12px rgba(0,0,0,0.16));
+  }
+}
+
+/* さらに小さい端末だけ微調整 */
+@media (max-width: 360px){
+  .page.menuPage .card--menu{
+    padding: 14px 14px 16px;
+    border-radius: 20px;
+  }
+  .page.menuPage .card--menu .grid{
+    padding: 6px 8px 2px;
+    gap: 10px 12px;
+  }
+  .page.menuPage .card--menu .menuTabImg{
+    max-width: 170px;
   }
 }
 
