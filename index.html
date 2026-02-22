@@ -4,23 +4,25 @@
   <meta charset="UTF-8" />
   <meta name="theme-color" content="#ffffff">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <title>KEIRIN QUARTET</title>
 
-  <!-- ✅ manifestは1つだけ（assets/icons側に統一） -->
-  <link rel="manifest" href="./assets/icons/site.webmanifest?v=exfix-lock-05">
+  <!-- ✅ manifestは1つだけ（ルートの manifest.webmanifest を使用） -->
+  <link rel="manifest" href="./manifest.webmanifest?v=exfix-lock-06">
 
   <!-- ✅ favicon（タブ用） -->
-  <link rel="icon" href="./assets/icons/favicon.ico?v=exfix-lock-05" type="image/x-icon">
-  <link rel="shortcut icon" href="./assets/icons/favicon.ico?v=exfix-lock-05" type="image/x-icon">
-  <link rel="icon" type="image/png" sizes="32x32" href="./assets/icons/favicon-32x32.png?v=exfix-lock-05">
-  <link rel="icon" type="image/png" sizes="16x16" href="./assets/icons/favicon-16x16.png?v=exfix-lock-05">
-  <link rel="apple-touch-icon" sizes="180x180" href="./assets/icons/apple-touch-icon.png?v=exfix-lock-05">
+  <link rel="icon" href="./assets/icons/favicon.ico?v=exfix-lock-06" type="image/x-icon">
+  <link rel="shortcut icon" href="./assets/icons/favicon.ico?v=exfix-lock-06" type="image/x-icon">
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/icons/favicon-32x32.png?v=exfix-lock-06">
+  <link rel="icon" type="image/png" sizes="16x16" href="./assets/icons/favicon-16x16.png?v=exfix-lock-06">
+  <link rel="apple-touch-icon" sizes="180x180" href="./assets/icons/apple-touch-icon.png?v=exfix-lock-06">
 
-  <link rel="stylesheet" href="./style.css?v=exfix-lock-05">
+  <link rel="stylesheet" href="./style.css?v=exfix-lock-06">
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer></script>
-  <script src="./app.js?v=exfix-lock-05" defer></script>
+  <script src="./app.js?v=exfix-lock-06" defer></script>
 </head>
 <body id="app">
   <header class="hero" role="banner">
@@ -40,12 +42,10 @@
   <script>
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
-        navigator.serviceWorker.register("/keirin-quartet-kurari/sw.js").catch(console.error);
+        navigator.serviceWorker.register("./sw.js").catch(console.error);
       });
     }
   </script>
 </body>
 </html>
-
-
 
