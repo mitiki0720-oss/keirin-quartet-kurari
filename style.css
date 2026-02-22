@@ -595,6 +595,33 @@ button.btn-save-img{
   .venuesPage .backLink__img{ width: 130px; }
 }
 
+/* =========================
+   Mobile fix: 本日のレース タイトル画像と戻るの被り解消
+   ========================= */
+@media (max-width: 520px){
+
+  /* 戻るボタンは右上に固定（前面） */
+  .page-today .todayBackBtn{
+    top: 8px;        /* ←上に寄せる */
+    right: 10px;
+    z-index: 30;
+  }
+  .page-today .todayBackBtn img{
+    width: 150px;    /* ←少し小さく（好みで140〜170） */
+    height: auto;
+    display: block;
+  }
+
+  /* タイトル画像を“戻るより下”へずらす */
+  .page-today .todayRaceTitleWrap{
+    margin-top: 64px;  /* ←ここが主役。60〜90で微調整OK */
+  }
+  .page-today .todayRaceTitleImg{
+    height: 92px;      /* ←大きければ80〜110で調整 */
+    margin-left: 12px; /* ←左余白。邪魔なら0でもOK */
+  }
+}
+
 .venuesPage .label,
 .venuesPage .venuesSection__title{
   color: rgba(0,0,0,0.85);
