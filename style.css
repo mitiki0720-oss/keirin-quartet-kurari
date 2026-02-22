@@ -2698,5 +2698,102 @@ button.btn-save-img{
 
 
 
+/* =========================
+   ✅ 選手一覧（スマホ）：ロゴ横に「戻る」を固定（折り返し防止）
+   ========================= */
+@media (max-width: 520px){
+
+  /* row側の wrap を殺して、必ず1行にする */
+  .playersHead{
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: space-between;
+    gap: 10px;
+    min-height: auto !important;     /* 170px強制を無効化 */
+    padding-top: 6px;
+  }
+
+  /* ロゴは「伸び縮み」できるようにして、戻るの席を確保 */
+  .playersHead .playersLogo{
+    flex: 1 1 auto;
+    min-width: 0; /* これが無いと縮まない端末がある */
+    height: 84px !important;         /* 120px強制を上書き（好みで 76〜96） */
+    max-width: calc(100% - 140px) !important; /* 戻る分を引く */
+    width: auto !important;
+    object-fit: contain;
+  }
+
+  /* 戻るボタンを少し小さく */
+  .playersBackBtn{
+    flex: 0 0 auto;
+  }
+  .playersBackBtn img{
+    width: 130px !important;         /* 160 → 130（好みで 120〜140） */
+    height: auto;
+    display: block;
+  }
+}
+
+/* さらに小さい端末だけ、もう少し詰める */
+@media (max-width: 360px){
+  .playersHead .playersLogo{ height: 76px !important; }
+  .playersBackBtn img{ width: 118px !important; }
+}
+
+
+
+
+/* =========================
+   ✅ レース予想（#/predict）スマホ：ヘッダー潰れ（縦文字化）対策
+   ========================= */
+@media (max-width: 520px){
+
+  /* 1行固定をやめて、左→右の2段にして幅不足を消す */
+  .predictHeaderBar{
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 10px 10px 10px;
+  }
+
+  /* 左（タイトル）は必ず1段目でフル幅 */
+  .predictHeaderLeft{
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+  .predictHeaderText{ flex: 1 1 auto; min-width: 0; }
+
+  /* タイトルまわりを少しコンパクトに */
+  .predictTitleImg{ height: 46px; }
+  .predictTitleText{ font-size: 15px; }
+
+  /* 手順テキストはスマホでは省略（見た目がスッキリ＆潰れ防止） */
+  .predictSteps{ display:none; }
+
+  /* 右（ChatGPT＋戻る）は2段目で横並び。ChatGPTは伸びる、戻るは固定 */
+  .predictHeaderRight{
+    flex: 1 1 100%;
+    width: 100%;
+    gap: 8px;
+  }
+  .predictChatBtn{
+    flex: 1 1 auto;
+    font-size: 12px;
+    padding: 9px 10px;
+    text-align: center;
+  }
+  .predictBackBtn{ flex: 0 0 auto; }
+  .predictBackBtn img{ width: 132px; } /* 160→132で圧迫を減らす */
+}
+
+/* 小さい端末だけもう一段コンパクト */
+@media (max-width: 360px){
+  .predictTitleImg{ height: 42px; }
+  .predictBackBtn img{ width: 120px; }
+}
+
+
+
+
 
 
