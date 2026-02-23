@@ -2797,3 +2797,58 @@ button.btn-save-img{
 
 
 
+
+/* =========================
+   Sync ZIP UI（トップ）
+   ========================= */
+.syncBox{
+  margin-top: 14px;
+  padding: 12px 12px 10px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.55);
+  border: 1px solid rgba(255,255,255,0.45);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.10);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.syncTitle{
+  font-weight: 900;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+.syncBtns{
+  display:flex;
+  gap:10px;
+  flex-wrap: wrap;
+}
+.syncBtn{
+  flex: 1 1 220px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(255,255,255,0.92);
+  font-weight: 900;
+}
+.syncBtn--sub{
+  background: rgba(255,255,255,0.72);
+}
+.syncHint{
+  margin-top: 8px;
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+@media (max-width: 520px){
+  .syncBtns{ flex-wrap: nowrap; }
+  .syncBtn{ flex: 1 1 0; }
+}
+@media (max-width: 360px){
+  .syncBtns{ flex-wrap: wrap; }
+  .syncBtn{ flex-basis: 100%; }
+}
+
+
+
+
+
+
